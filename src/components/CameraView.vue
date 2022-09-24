@@ -1,8 +1,9 @@
 <template>
   <div>
-    <video autoplay id="videoPlayer" ref="videoPlayer" v-show="loaded" class="h-full rounded"></video>
-    <div v-show="!loaded">
+    <video autoplay id="videoPlayer" ref="videoPlayer" v-show="loaded" class="h-full rounded border-bglightest border-2"></video>
+    <div v-show="!loaded" class="text-gray flex flex-col justify-center h-full">
       <p>Please allow the use of your camera</p>
+      <br>
       <Spinner></Spinner>
     </div>
   </div>
@@ -20,6 +21,23 @@ const loaded = ref(false);
 let device: MediaStream | null = null;
 
 onMounted(async () => {
+  while (!loaded.value) {
+    try {
+      await loadCamera();
+    } catch (e) {
+      console.error(`error loading camera: ${e}`);
+    }
+  }
+});
+
+onBeforeUnmount(() => {
+  device?.getTracks().forEach(t => t.stop());
+  loaded.value = false;
+});
+
+async function loadCamera() {
+  loaded.value = false;
+
   device = await navigator.mediaDevices.getUserMedia({
     audio: false,
     video: true
@@ -29,12 +47,7 @@ onMounted(async () => {
 
   await new Promise(r => setTimeout(r, 500));
   loaded.value = true;
-});
-
-onBeforeUnmount(() => {
-  device?.getTracks().forEach(t => t.stop());
-  loaded.value = false;
-});
+}
 
 </script>
 

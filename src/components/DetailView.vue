@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full child:float-right">
     <div v-show="product == null" class="flex flex-col items-center text-gray w-full">
-      <span class="material-symbols-outlined text-6xl">warning</span>
+      <span class="material-symbols-outlined text-6xl text-red">warning</span>
       <p>
         No product detected. <br>
         Try a different angle

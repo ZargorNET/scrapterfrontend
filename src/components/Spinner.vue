@@ -25,13 +25,13 @@
 .loader:before {
   animation: box1 1s infinite;
   background-color: #fff;
-  box-shadow: 30px 0 0 #ff3d00;
+  box-shadow: 30px 0 0 #E53E3E;
   margin-bottom: 10px;
 }
 
 .loader:after {
   animation: box2 1s infinite;
-  background-color: #ff3d00;
+  background-color: #E53E3E;
   box-shadow: 30px 0 0 #fff;
 }
 
@@ -49,15 +49,15 @@
 
 @keyframes box1 {
   0% {
-    box-shadow: 30px 0 0 #ff3d00;
+    box-shadow: 30px 0 0 #E53E3E;
   }
   50% {
-    box-shadow: 0 0 0 #ff3d00;
+    box-shadow: 0 0 0 #E53E3E;
     margin-bottom: 0;
     transform: translate(15px, 15px);
   }
   100% {
-    box-shadow: 30px 0 0 #ff3d00;
+    box-shadow: 30px 0 0 #E53E3E;
     margin-bottom: 10px;
   }
 }

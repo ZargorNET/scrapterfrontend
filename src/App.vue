@@ -7,16 +7,17 @@
         class="px-2 sm:px-0 sm:w-2/3 flex flex-col child:flex-grow-0 h-full items-center"
     >
       <TitleComponent size="large">
-        <template #title>Scrapter</template>
+        <template #title>Scrap<span class="text-blurplelight">ter</span></template>
         <template #subtitle>Sort your Flasks!</template>
       </TitleComponent>
       <div class="flex flex-col items-center bg-bglighter p-4 rounded mt-6 h-3/4 w-full">
         <CameraView class="h-1/2" @mouseenter="test = true"
                     @mouseleave="test = false"></CameraView>
-        <div class="bg-gray w-full h-[2px] my-2"></div>
+        <PulseComponent></PulseComponent>
         <div class="h-1/2 w-full">
           <DetailView :product="test ? product : null" class="flex items-center"></DetailView>
         </div>
+        <h1 ref="testText"></h1>
       </div>
     </div>
   </div>
@@ -30,10 +31,12 @@ import DetailView from "./components/DetailView.vue";
 import Product from "./models/product";
 import {ProductType} from "./models/productType";
 import {onBeforeUnmount, onMounted, ref} from "vue";
+import PulseComponent from "./components/PulseComponent.vue";
 
 const test = ref(false);
 let videoPlayer: HTMLVideoElement | null;
 let videoScreenshot = ref<HTMLCanvasElement | null>(null);
+let testText = ref<HTMLParagraphElement>();
 
 const product: Product = {
   name: "3 Käse Hoch",
@@ -43,6 +46,7 @@ const product: Product = {
 
 let connection: WebSocket | null = null;
 let loopInterval: number | null = null;
+
 
 onMounted(() => {
   videoPlayer = document.getElementById("videoPlayer") as HTMLVideoElement;
@@ -84,6 +88,8 @@ function connectWebsocket() {
 function closeWebsocket() {
   connection?.close();
 }
+
+
 
 function loop() {
   if (videoScreenshot.value != null && videoPlayer != null) {
