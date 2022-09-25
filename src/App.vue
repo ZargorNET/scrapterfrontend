@@ -15,7 +15,7 @@
                     @mouseleave="test = false"></CameraView>
         <PulseComponent></PulseComponent>
         <div class="h-1/2 w-full">
-          <DetailView :product="test ? product : null" class="flex items-center"></DetailView>
+          <DetailView :product="product" class="flex items-center"></DetailView>
         </div>
         <h1 ref="testText"></h1>
       </div>
@@ -38,11 +38,7 @@ let videoPlayer: HTMLVideoElement | null;
 let videoScreenshot = ref<HTMLCanvasElement | null>(null);
 let testText = ref<HTMLParagraphElement>();
 
-const product: Product = {
-  name: "3 Käse Hoch",
-  image: "https://de.openfoodfacts.org/images/products/305/764/025/7773/front_fr.265.400.jpg",
-  productType: ProductType.GREEN
-};
+const product = ref<Product | null>(null);
 
 let connection: WebSocket | null = null;
 let loopInterval: number | null = null;
@@ -68,14 +64,38 @@ onBeforeUnmount(() => {
 function connectWebsocket() {
   closeWebsocket();
 
-  connection = new WebSocket("ws://172.20.10.4:8000/ws");
+  connection = new WebSocket("ws://127.0.0.1:8000/ws");
 
   connection.onopen = () => {
     console.info("WebSocket connected");
   };
 
   connection.onmessage = (d) => {
+    console.log(d.data);
+    if (d.data == {}) {
 
+    }
+
+    const obj = JSON.parse(d.data) as Product;
+    if(Object.keys(obj).length == 0) {
+      product.value = null;
+      return;
+    }
+    product.value = obj;
+    /**
+     *
+     *     if ('result' in obj) {
+     *       console.log("here we are, 'auction_data' in msgData");
+     *       if (obj.result === false) {
+     *         console.log("false");
+     *         product['name'] = "Barcode nicht gefunden";
+     *       } else {
+     *         console.log("true");
+     *         product['name'] = obj.name;
+     *         product['productType'] = obj.classification;
+     *       }
+     *     }
+     */
   };
 
   connection.onclose = () => {
@@ -88,7 +108,6 @@ function connectWebsocket() {
 function closeWebsocket() {
   connection?.close();
 }
-
 
 
 function loop() {
