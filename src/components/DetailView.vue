@@ -11,7 +11,7 @@
       <div>
         <span class="text-gray">Product Name</span>: {{ product.name }}
         <br>
-        <span class="text-gray">Classification</span>: {{ ProductType[product.productType] }}
+        <span class="text-gray">Classification</span>: {{ product.productType }}
       </div>
       <div class="ml-auto bg-bglightest p-4 h-[180px] w-[180px] flex justify-center items-center rounded">
         <img alt="product image" v-if="product.image != null" :src="product.image" class="h-full">
@@ -22,7 +22,6 @@
 
 <script setup lang="ts">
 import Product from "../models/product";
-import {ProductType} from "../models/productType";
 
 defineProps<{
   product: Product | null
